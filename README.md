@@ -1,6 +1,6 @@
-# Wampace, a WAMP router
+# Wampace
 
-Wampace is WAMP routeur written in Go.
+Wampace is [WAMP](http://wamp.ws/) router and client written in Go.
 
 ## Installation
 
@@ -10,11 +10,11 @@ Wampace is WAMP routeur written in Go.
 go get github.com/francisbouvier/wampace
 ```
 
-## Usage
+## Router usage
 
 ```sh
 wampace
-# Will launch the router on localhost:1234
+# Will launch the router on 127.0.0.1:1234
 ```
 
 **Address and port**
@@ -22,8 +22,7 @@ wampace
 You can specify on witch address/port you want to use the router.
 
 ```sh
-wampace mydomain.com
-wampace mydomain.com:8888
+wampace <ip>:<port>
 ```
 
 **TLS Mode**
@@ -36,3 +35,41 @@ wampace -c server.crt -k key.pem
 ```
 
 *NB*: You can use either self-signed certificates or commercial certificates. Self-signed certificates will not work with a WAMP browser clients (except if you add them manually in the brower).
+
+## Client usage
+
+```go
+package main
+
+import (
+	"log"
+
+	"github.com/francisbouvier/wampace/client"
+)
+
+func main() {
+
+	// Set the address of the router
+	addr := "127.0.0.1:1234"
+
+	// Define a realm
+	realm := "realm1"
+
+	// Connect to the server
+	c, err := client.New(addr)
+	if err != nil {
+		log.Fatalln("Connect error:", err)
+	}
+
+	// Join the wamp session
+	err = c.Join(realm)
+	if err != nil {
+		log.Fatalln("Join error:", err)
+	}
+
+	// Wait for messages
+	c.End()
+}
+```
+
+See the `examples` directory for detailled pubsub and rpc examples.
