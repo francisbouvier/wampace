@@ -73,7 +73,7 @@ func main() {
 	default:
 		// Endpoint
 		port := "1234"
-		addr = "127.0.0.1"
+		addr = "0.0.0.0"
 		if len(flag.Args()) > 0 {
 			addr = flag.Args()[0]
 		}
